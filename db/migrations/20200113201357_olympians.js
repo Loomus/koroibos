@@ -3,16 +3,16 @@ exports.up = function(knex) {
   return Promise.all([
     knex.schema.createTable('olympians', function(table) {
       table.increments('id').primary();
-      table.string('Name');
-      table.string('Sex');
-      table.string('Age');
-      table.string('Height');
-      table.string('Weight');
-      table.string('Team');
-      table.string('Games');
-      table.string('Sport');
-      table.string('Event');
-      table.string('Medal');
+      table.string('name');
+      table.string('sex');
+      table.string('age');
+      table.string('height');
+      table.string('weight');
+      table.string('team');
+      table.string('games');
+      table.string('sport');
+      table.string('event');
+      table.string('medal');
 
       table.timestamps(true, true);
     })
