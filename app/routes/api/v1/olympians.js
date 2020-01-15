@@ -3,28 +3,29 @@ const router = express.Router()
 const environment = process.env.NODE_ENV || 'development'
 const configuration = require('../../../../knexfile')[environment]
 const database = require('knex')(configuration)
-const Olympian = require('../../../models/olympian.js')
-
+const getByAge = (age) => database('olympians')
+.select()
+.orderBy('age', age)
+.limit(1)
+.then(result => result)
+.catch(error => error)
 
 const getOlympians = router.get('/', async (request, response) => {
-  if (request.query.age === 'oldest') {
-    newQuery = 'ORDER BY olympian.age DESC LIMIT 1'
-  } else if (request.query.age === 'youngest') {
-    newQuery = 'ORDER BY olympian.age ASC LIMIT 1'
-  } else {
-    newQuery = ' '
+  let sortOrder = null
+  if (request.query.age === 'youngest') {
+    sortOrder = 'ASC'
+  } else if (request.query.age === 'oldest') {
+    sortOrder = 'DESC'
   }
   const olympians = await database('olympians').then(result => result)
-  if (request.query.age === 'youngest' || request.query.age === 'oldest') {
-    response.status(200).json(olympians.getByAge, newQuery);
-  } else if () {
+  if (sortOrder) {
+    const age = await getByAge(sortOrder)
+    response.status(200).json(age)
+  } else if (olympians) {
     response.status(200).json(olympians)
-    // response.status(200).send({'olympians': olympians['rows']})
-    // response.status(404).json('No olympians in database')
   } else {
-
+    response.status(400).json({ error: 'Bad request' })
   }
-
 })
 
 module.exports = getOlympians
