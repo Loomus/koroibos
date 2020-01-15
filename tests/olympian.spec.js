@@ -83,5 +83,17 @@ describe('Test Olympian Endpoints', () => {
         expect(res.body[0].age).toBe("23");
         })
       })
+    describe('Gets Olympian Stats', () => {
+      it('Successful Stats', async () => {
+        const res = await request(app)
+          .get("/api/v1/olympian_stats");
+
+        expect(res.body['olympian_stats']['total_competing_olympians']).toBe(3)
+        expect(res.body['olympian_stats']['average_weight']['male_olympians']).toBe(100)
+        expect(res.body['olympian_stats']['average_weight']['female_olympians']).toBe(157.5)
+        expect(res.body['olympian_stats']['average_age']).toBe(34)
+        expect(res.statusCode).toBe(200);
+      })
+    })
   })
 })
