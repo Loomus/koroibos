@@ -19,6 +19,7 @@ describe('Test Olympian Endpoints', () => {
         team: 'United States of America',
         games: '2020 Summer',
         sport: 'Weightlifting',
+        event: 'Clean and Jerk',
         medal: 'Bronze',
       },
       {
@@ -30,6 +31,7 @@ describe('Test Olympian Endpoints', () => {
         team: 'Korea',
         games: '2020 Summer',
         sport: 'Shooting',
+        event: 'Solo Archery',
         medal: "Silver",
       },
       {
@@ -41,13 +43,11 @@ describe('Test Olympian Endpoints', () => {
         team: 'Brazil',
         games: '2020 Summer',
         sport: 'Swimming',
+        event: '400m Free Form',
         medal: "Gold",
       },
     ];
     await database('olympians').insert(olympians, 'id').then(result => result)
-  })
-  afterEach(() => {
-    database.raw('truncate table olympians cascade')
   })
 
     describe('Get Olympians', () => {
@@ -68,9 +68,9 @@ describe('Test Olympian Endpoints', () => {
         const res = await request(app)
           .get("/api/v1/olympians?age=oldest");
 
-          expect(res.statusCode).toBe(200);
-          expect(res.body.length).toBe(1);
-
+        expect(res.statusCode).toBe(200);
+        expect(res.body.length).toBe(1);
+        expect(res.body[0].age).toBe("45");
         })
       })
     describe('Youngest Olympian', () => {
@@ -78,10 +78,9 @@ describe('Test Olympian Endpoints', () => {
         const res = await request(app)
           .get("/api/v1/olympians?age=youngest");
 
-          console.log(res.body)
-          expect(res.statusCode).toBe(200);
-          expect(res.body.length).toBe(1);
-
+        expect(res.statusCode).toBe(200);
+        expect(res.body.length).toBe(1);
+        expect(res.body[0].age).toBe("23");
         })
       })
   })
